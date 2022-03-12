@@ -1,7 +1,7 @@
 import axios from 'axios';
 import jwtDecoder from 'jwt-decode';
 
-const BASE_URL = 'http://localhost:5005';
+const BASE_URL = 'http://localhost:8000';
 
 const api = {
   login: `${BASE_URL}/user/auth/login`,

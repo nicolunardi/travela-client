@@ -89,12 +89,12 @@ const RegisterForm = () => {
           password: fields.password,
           name: fields.name,
         });
-        if (response.status === 200) {
+        if (response.status >= 200 && response.status < 300) {
           setErrorMessage('successfully registered in');
           setSuccess(true);
           setUser({ token: response.data.token, email: localStorage.getItem('email') });
         } else {
-          setErrorMessage(response.data.error);
+          setErrorMessage(response.data.detail);
           setSuccess(false);
         }
       }

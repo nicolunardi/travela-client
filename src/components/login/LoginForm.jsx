@@ -51,13 +51,13 @@ const LoginForm = () => {
       // if the email and password fields are not empty
       if (email && password) {
         const response = await login({ email: email, password: password });
-        if (response.status === 200) {
+        if (response.status >= 200 && response.status < 300) {
           setSuccess(true);
           setErrorMessage('successfully logged in');
           setUser({ token: response.data.token, email: localStorage.getItem('email') });
           history.goBack();
         } else {
-          setErrorMessage(response.data.error);
+          setErrorMessage(response.data.detail);
           setSuccess(false);
         }
       } else {

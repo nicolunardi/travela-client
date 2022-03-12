@@ -17,13 +17,17 @@ const NavBarTop = () => {
       <AppBar position="static">
         <Toolbar>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            AirBrB
+            Travela
           </Typography>
           <Button color="inherit" onClick={() => history.push('/')}>
             All listings
           </Button>
           {user.token && (
-            <Button id="myListingsBtn" color="inherit" onClick={() => history.push('/user/listings')}>
+            <Button
+              id="myListingsBtn"
+              color="inherit"
+              onClick={() => history.push('/user/listings')}
+            >
               My listings
             </Button>
           )}
