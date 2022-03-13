@@ -24,15 +24,22 @@ const apiCall = (method, url, body) => {
     data: body || null,
     headers: {
       Authorization: `Bearer ${localStorage.getItem('token')}`,
+      'Content-Type': 'application/x-www-form-urlencoded',
     },
   });
 };
 
 export const login = async (body) => {
   try {
-    const response = await apiCall('POST', api.login, body);
-    localStorage.setItem('token', response.data.token);
-    localStorage.setItem('email', jwtDecoder(response.data.token).email);
+    // needed for backend OAuth
+    const formData = new FormData();
+    formData.append('username', body.username);
+    formData.append('password', body.password);
+
+    const response = await apiCall('POST', api.login, formData);
+    console.log(response);
+    localStorage.setItem('token', response.data.access_token);
+    localStorage.setItem('email', jwtDecoder(response.data.access_token).email);
     return response;
   } catch (error) {
     return error.response;

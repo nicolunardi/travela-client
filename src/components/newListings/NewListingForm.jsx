@@ -180,16 +180,14 @@ const NewListingForm = () => {
       },
       thumbnail: thumbnail,
       price: price,
-      metadata: {
-        bedroomsTotal: totalBedrooms,
-        bedsTotal: beds,
-        type: type,
-        bathrooms: bathrooms,
-        parking: parking,
-        imagesList: imagesList,
-        amenities: amenitiesObj,
-        bedrooms: bedrooms,
-      },
+      total_bedrooms: totalBedrooms,
+      total_beds: beds,
+      type: type,
+      bathrooms: bathrooms,
+      parking: parking,
+      images: imagesList,
+      amenities: amenitiesObj,
+      bedrooms: bedrooms,
     };
     const res = await createListing(newListing);
     if (res.status === 200) {
@@ -466,7 +464,13 @@ const NewListingForm = () => {
                   startIcon={<CameraAltIcon></CameraAltIcon>}
                 >
                   Upload
-                  <input name="thumbnailUpload" type="file" hidden onChange={(e) => addImage(e)} multiple />
+                  <input
+                    name="thumbnailUpload"
+                    type="file"
+                    hidden
+                    onChange={(e) => addImage(e)}
+                    multiple
+                  />
                 </Button>
               </Grid>
             </Grid>
@@ -474,7 +478,7 @@ const NewListingForm = () => {
           <Divider light />
           <Grid container sx={{ mt: 2 }} justifyContent="center">
             <Button
-            id="submitNewListingBtn"
+              id="submitNewListingBtn"
               size="large"
               variant="contained"
               color="primary"

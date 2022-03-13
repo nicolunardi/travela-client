@@ -50,7 +50,8 @@ const LoginForm = () => {
     if (!emailError.error && !passwordError.error) {
       // if the email and password fields are not empty
       if (email && password) {
-        const response = await login({ email: email, password: password });
+        const response = await login({ username: email, password: password });
+        console.log(response);
         if (response.status >= 200 && response.status < 300) {
           setSuccess(true);
           setErrorMessage('successfully logged in');
