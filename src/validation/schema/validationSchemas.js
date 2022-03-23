@@ -7,6 +7,8 @@ const editListingSchema = Yup.object().shape({
   number: Yup.number().typeError('Must be a number').required('Street number is required'),
   street: Yup.string().required('Street name is required'),
   suburb: Yup.string().required('Suburb name is required'),
+  postCode: Yup.number().typeError('Must be a number').required('Post code is required'),
+  state: Yup.string().required('State is required'),
   country: Yup.string().required('Country is required'),
 });
 

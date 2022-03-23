@@ -17,14 +17,13 @@ const api = {
   declineBooking: `${BASE_URL}/bookings/decline`,
 };
 
-const apiCall = (method, url, body) => {
+const apiCall = (method, url, body, login = false) => {
   return axios({
     method: method,
     url: url,
     data: body || null,
-    headers: {
+    headers: login || {
       Authorization: `Bearer ${localStorage.getItem('token')}`,
-      'Content-Type': 'application/x-www-form-urlencoded',
     },
   });
 };
@@ -36,7 +35,10 @@ export const login = async (body) => {
     formData.append('username', body.username);
     formData.append('password', body.password);
 
-    const response = await apiCall('POST', api.login, formData);
+    const response = await apiCall('POST', api.login, formData, {
+      Authorization: `Bearer ${localStorage.getItem('token')}`,
+      'Content-Type': 'application/x-www-form-urlencoded',
+    });
     console.log(response);
     localStorage.setItem('token', response.data.access_token);
     localStorage.setItem('email', jwtDecoder(response.data.access_token).email);

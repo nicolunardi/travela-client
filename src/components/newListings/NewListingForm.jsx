@@ -95,7 +95,6 @@ const NewListingForm = () => {
   const [bathrooms, setBathrooms] = useState(0);
   const [parking, setParking] = useState(0);
   const [type, setType] = useState('house');
-  const [state, setState] = useState('');
   const [bedrooms, setBedrooms] = useState([]);
   const [amenities, setAmenities] = useState(amenityList.map((amenity) => ({ [amenity]: false })));
   const [thumbnail, setThumbnail] = useState('');
@@ -164,7 +163,7 @@ const NewListingForm = () => {
   };
 
   const onSubmit = async (data) => {
-    const { title, number, street, suburb, country } = data;
+    const { title, number, street, suburb, country, state, postCode } = data;
     const { beds, bedrooms: totalBedrooms } = getBedroomTotals(bedrooms);
     // convert amenities to an object
     let amenitiesObj = amenities.flatMap(Object.entries);
@@ -175,6 +174,7 @@ const NewListingForm = () => {
         street_number: number,
         street_name: street,
         suburb: suburb,
+        post_code: postCode,
         state: state,
         country: country,
       },
@@ -189,14 +189,17 @@ const NewListingForm = () => {
       amenities: amenitiesObj,
       bedrooms: bedrooms,
     };
+    console.log(imagesList);
     const res = await createListing(newListing);
-    if (res.status === 200) {
+    if (res.status >= 200 && res.status < 300) {
+      console.log(res.status);
       setAlertMessage('Listing successfully saved!');
       setSuccess(true);
       setShowAlert(true);
       setTimeout(() => history.push('/user/listings'), 1000);
     } else {
-      setAlertMessage(res.data.error);
+      console.log(res.data);
+      setAlertMessage(res.data.detail);
       setSuccess(false);
       setShowAlert(true);
     }
@@ -321,13 +324,24 @@ const NewListingForm = () => {
               {...register('suburb')}
             />
             <TextField
+              required
+              name="postCode"
+              label="Post code"
+              variant="standard"
+              sx={styles.inputSmall}
+              error={!!errors.postCode}
+              helperText={errors.postCode?.message}
+              {...register('postCode')}
+            />
+            <TextField
+              required
               name="state"
               label="State"
-              value={state}
               variant="standard"
-              onChange={(e) => setState(e.target.value)}
               sx={styles.inputSmall}
-              type="text"
+              error={!!errors.state}
+              helperText={errors.state?.message}
+              {...register('state')}
             />
             <TextField
               required
