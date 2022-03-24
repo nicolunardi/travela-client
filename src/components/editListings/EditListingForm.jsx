@@ -100,8 +100,9 @@ const EditListingForm = () => {
 
   useEffect(async () => {
     const response = await getListing(id);
-    if (response.status === 200) {
-      setListing(response.data.listing);
+    if (response.status >= 200 && response.status < 300) {
+      console.log(response.data);
+      setListing(response.data);
     }
   }, []);
 
@@ -145,21 +146,21 @@ const EditListingForm = () => {
       return imgUrl;
     });
     newImages = await Promise.all(newImages);
-    newListing.metadata.imagesList.push(...newImages);
+    newListing.metadata.images.push(...newImages);
     setListing(newListing);
     e.target.value = null;
   };
 
   const deleteImage = (idx) => {
     const newListing = { ...listing };
-    const imagesList = listing.metadata.imagesList;
-    imagesList.splice(idx, 1);
-    newListing.metadata.imagesList = imagesList;
+    const images = listing.metadata.images;
+    images.splice(idx, 1);
+    newListing.metadata.images = images;
     setListing(newListing);
   };
 
   const onSubmit = async (data) => {
-    const { title, number, street, suburb, country } = data;
+    const { title, number, street, suburb, country, postCode, state } = data;
     // data contains the data from the validated inputs
     const { thumbnail, price, metadata, address } = listing;
     const { beds, bedrooms } = getBedroomTotals(metadata.bedrooms);
@@ -170,20 +171,24 @@ const EditListingForm = () => {
         street_number: number,
         street_name: street,
         suburb: suburb,
+        post_code: postCode,
         country: country,
+        state: state,
       },
       price: price,
       thumbnail: thumbnail,
-      metadata: { ...metadata, bedroomsTotal: bedrooms, bedsTotal: beds },
+      ...metadata,
+      total_bedrooms: bedrooms,
+      total_beds: beds,
     };
     const res = await updateListing(id, updatedListing);
-    if (res.status === 200) {
+    if (res.status >= 200 && res.status < 300) {
       setAlertMessage('Listing successfully saved!');
       setSuccess(true);
       setShowAlert(true);
       setTimeout(() => history.push('/user/listings'), 1000);
     } else {
-      setAlertMessage(res.data.error);
+      setAlertMessage(res.data.detail);
       setSuccess(false);
       setShowAlert(true);
     }
@@ -326,17 +331,26 @@ const EditListingForm = () => {
                 {...register('suburb')}
               />
               <TextField
+                required
+                name="state"
                 label="State"
-                value={listing.address.state}
+                defaultValue={listing.address.state}
                 variant="standard"
-                onChange={(e) =>
-                  setListing({
-                    ...listing,
-                    address: { ...listing.address, state: e.target.value || '' },
-                  })
-                }
                 sx={styles.inputSmall}
-                type="text"
+                error={!!errors.state}
+                helperText={errors.state?.message}
+                {...register('state')}
+              />
+              <TextField
+                required
+                name="postCode"
+                label="Post code"
+                defaultValue={listing.address.post_code}
+                variant="standard"
+                sx={styles.inputSmall}
+                error={!!errors.postCode}
+                helperText={errors.postCode?.message}
+                {...register('postCode')}
               />
               <TextField
                 required
@@ -436,8 +450,8 @@ const EditListingForm = () => {
               </Typography>
               <Divider light />
               <Grid container justifyContent="center">
-                {listing.metadata.imagesList.length !== 0 &&
-                  listing.metadata.imagesList.map((image, idx) => (
+                {listing.metadata.images.length !== 0 &&
+                  listing.metadata.images.map((image, idx) => (
                     <Grid key={idx} item sx={styles.imgContainer}>
                       <Box component="img" src={image} sx={styles.thumbnail}></Box>
                       <IconButton

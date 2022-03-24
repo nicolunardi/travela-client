@@ -39,7 +39,6 @@ export const login = async (body) => {
       Authorization: `Bearer ${localStorage.getItem('token')}`,
       'Content-Type': 'application/x-www-form-urlencoded',
     });
-    console.log(response);
     localStorage.setItem('token', response.data.access_token);
     localStorage.setItem('email', jwtDecoder(response.data.access_token).email);
     return response;
@@ -82,6 +81,7 @@ export const getListing = async (id) => {
     const response = await apiCall('GET', `${api.listings}/${id}`);
     return response;
   } catch (error) {
+    console.log(error.response.data);
     return error.response;
   }
 };
