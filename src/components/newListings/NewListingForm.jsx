@@ -323,7 +323,7 @@ const NewListingForm = () => {
               helperText={errors.suburb?.message}
               {...register('suburb')}
             />
-            {/* <TextField
+            <TextField
               required
               name="postCode"
               label="Post code"
@@ -332,7 +332,7 @@ const NewListingForm = () => {
               error={!!errors.postCode}
               helperText={errors.postCode?.message}
               {...register('postCode')}
-            /> */}
+            />
             <TextField
               required
               name="state"

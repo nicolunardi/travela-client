@@ -181,6 +181,8 @@ const EditListingForm = () => {
       total_bedrooms: bedrooms,
       total_beds: beds,
     };
+    console.log(metadata.images);
+    console.log(metadata.bedrooms);
     const res = await updateListing(id, updatedListing);
     if (res.status >= 200 && res.status < 300) {
       setAlertMessage('Listing successfully saved!');
@@ -453,7 +455,7 @@ const EditListingForm = () => {
                 {listing.metadata.images.length !== 0 &&
                   listing.metadata.images.map((image, idx) => (
                     <Grid key={idx} item sx={styles.imgContainer}>
-                      <Box component="img" src={image} sx={styles.thumbnail}></Box>
+                      <Box component="img" src={image.image} sx={styles.thumbnail}></Box>
                       <IconButton
                         color="error"
                         aria-label="delete image"
