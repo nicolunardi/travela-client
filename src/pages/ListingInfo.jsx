@@ -53,7 +53,6 @@ const ListingInfo = () => {
         if (res.status >= 200 && res.status < 300) {
           const bookings = getUserBookingsObjects(res.data.bookings);
           const userBooking = findBooking(bookings, id);
-          console.log(userBooking);
           if (userBooking) {
             setUserBooking(userBooking);
           }
@@ -86,7 +85,7 @@ const ListingInfo = () => {
       const body = { review: { text: message, rating: rating } };
       const res = await newReview(id, userBooking.id, body);
       if (res.status >= 200 && res.status < 300) {
-        const newReviews = listing.reviews.concat(body.review);
+        const newReviews = listing.reviews.concat(res.data);
         setShowReviewModal(false);
         setListing({ ...listing, reviews: newReviews });
       }

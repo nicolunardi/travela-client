@@ -31,7 +31,6 @@ const styles = {
 };
 
 const BookingsHistoryTable = ({ bookings }) => {
-  console.log(bookings, 'inside');
   return (
     <>
       {!!bookings.length && (

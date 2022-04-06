@@ -17,7 +17,6 @@ const FilterModal = ({
   const handleClose = () => {
     setIsOpen(false);
   };
-  console.log(filteredListings);
 
   return (
     <div>

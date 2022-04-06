@@ -92,7 +92,11 @@ const RegisterForm = () => {
         if (response.status >= 200 && response.status < 300) {
           setErrorMessage('successfully registered in');
           setSuccess(true);
-          setUser({ token: response.data.token, email: localStorage.getItem('email') });
+          setUser({
+            token: response.data.access_token,
+            email: localStorage.getItem('email'),
+            id: localStorage.getItem('id'),
+          });
         } else {
           setErrorMessage(response.data.detail);
           setSuccess(false);

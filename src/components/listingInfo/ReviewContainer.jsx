@@ -22,7 +22,6 @@ const styles = {
 };
 
 const ReviewContainer = ({ review }) => {
-  console.log(review);
   return (
     <Paper sx={styles.paper}>
       <Container>

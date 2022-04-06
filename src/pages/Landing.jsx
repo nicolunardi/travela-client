@@ -43,7 +43,6 @@ const Landing = () => {
           bookings = getUserBookings(res.data.bookings);
           if (bookings.length) {
             for (const listing of listings) {
-              console.log(listing.id);
               if (bookings.includes(listing.id)) {
                 booked.push(listing);
               } else {

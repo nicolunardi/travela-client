@@ -192,13 +192,11 @@ const NewListingForm = () => {
 
     const res = await createListing(newListing);
     if (res.status >= 200 && res.status < 300) {
-      console.log(res.status);
       setAlertMessage('Listing successfully saved!');
       setSuccess(true);
       setShowAlert(true);
       setTimeout(() => history.push('/user/listings'), 1000);
     } else {
-      console.log(res.data);
       setAlertMessage(res.data.detail);
       setSuccess(false);
       setShowAlert(true);

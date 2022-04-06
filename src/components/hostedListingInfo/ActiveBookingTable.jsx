@@ -37,7 +37,6 @@ const styles = {
  *  if the booking dates fall outside of the listings availability ranges
  */
 const ActiveBookingTable = ({ bookings, setBookings, allBookings }) => {
-  console.log(bookings);
   const handleAcceptBooking = async (id, dateRange) => {
     const res = await acceptBooking(id);
     if (res.status >= 200 && res.status < 300) {
