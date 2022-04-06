@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import Typography from '@mui/material/Typography';
 import { Grid, Container, SpeedDial, Tooltip } from '@mui/material';
 import { UserListingCard } from '../components/hostedListings';
 import { getListing, getListings } from '../service/api';
 import AddIcon from '@mui/icons-material/Add';
+import { UserContext } from '../contexts/UserContext';
 
 const styles = {
   container: { position: 'relative', my: 4 },
@@ -14,18 +15,19 @@ const styles = {
 const HostedListings = () => {
   const history = useHistory();
   const [userListings, setUserListings] = useState(null);
+  const { user } = useContext(UserContext);
 
   useEffect(async () => {
     const allUserListings = [];
     const response = await getListings();
-    if (response.status === 200) {
+    if (response.status >= 200 && response.status < 300) {
       const listings = response.data.listings.filter(
-        (listing) => listing.owner === localStorage.getItem('email'),
+        (listing) => listing.owner_id === parseInt(user.id),
       );
       for (const listing of listings) {
         const response = await getListing(listing.id);
-        if (response.status === 200) {
-          allUserListings.push({ ...response.data.listing, id: listing.id });
+        if (response.status >= 200 && response.status < 300) {
+          allUserListings.push({ ...response.data });
         } else {
           //   TODO ERROR POPUP
         }

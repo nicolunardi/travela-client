@@ -20,7 +20,7 @@ const InfoContainer = ({ listing, bookings }) => {
         <ListItem>
           <ListItemText
             primary={`Live time: ${
-              listing.published ? getLiveTime(listing.postedOn) + ' day/s' : 'not live'
+              listing.published ? getLiveTime(listing.posted_on) + ' day/s' : 'not live'
             }`}
             secondary="How many days the listing has been live for this year."
           />

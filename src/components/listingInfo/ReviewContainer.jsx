@@ -22,15 +22,16 @@ const styles = {
 };
 
 const ReviewContainer = ({ review }) => {
+  console.log(review);
   return (
     <Paper sx={styles.paper}>
       <Container>
         <Box sx={styles.box}>
-          <Typography variant="subtitle2">By {capitalize(review.owner)}</Typography>
+          <Typography variant="subtitle2">By {capitalize(review.owner_name)}</Typography>
           <Rating name="read-only" value={review.rating} precision={0.1} readOnly size="small" />
         </Box>
         <Typography variant="body2" sx={styles.reviewText}>
-          {review.review}
+          {review.text}
         </Typography>
       </Container>
     </Paper>

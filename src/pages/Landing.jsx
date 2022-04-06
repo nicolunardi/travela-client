@@ -25,11 +25,11 @@ const Landing = () => {
     const others = [];
 
     const res = await getListings();
-    if (res.status === 200) {
+    if (res.status >= 200 && res.status < 300) {
       for (const listing of res.data.listings) {
         const res = await getListing(listing.id);
-        if (res.status === 200) {
-          listings.push({ ...res.data.listing, id: listing.id });
+        if (res.status >= 200 && res.status < 300) {
+          listings.push({ ...res.data, id: listing.id });
           listings = listings.filter((listing) => listing.published);
           listings = sortListingsAlphabetically(listings);
         } else {
@@ -39,11 +39,12 @@ const Landing = () => {
       // if user is logged in, get booked listings and show them first
       if (user.token) {
         const res = await getBookings();
-        if (res.status === 200) {
+        if (res.status >= 200 && res.status < 300) {
           bookings = getUserBookings(res.data.bookings);
           if (bookings.length) {
             for (const listing of listings) {
-              if (bookings.includes(`${listing.id}`)) {
+              console.log(listing.id);
+              if (bookings.includes(listing.id)) {
                 booked.push(listing);
               } else {
                 others.push(listing);

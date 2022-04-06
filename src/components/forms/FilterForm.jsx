@@ -81,11 +81,11 @@ const FilterForm = ({
     }
     return listings.filter(
       (listing) =>
-        listing.metadata.bedroomsTotal >= minBedrooms &&
+        listing.metadata.total_bedrooms >= minBedrooms &&
         (maxBedrooms === 5
-          ? listing.metadata.bedroomsTotal ||
-            listing.metadata.bedroomsTotal <= maxBedrooms >= maxBedrooms
-          : listing.metadata.bedroomsTotal <= maxBedrooms),
+          ? listing.metadata.total_bedrooms ||
+            listing.metadata.total_bedrooms <= maxBedrooms >= maxBedrooms
+          : listing.metadata.total_bedrooms <= maxBedrooms),
     );
   };
 

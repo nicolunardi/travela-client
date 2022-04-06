@@ -41,6 +41,7 @@ export const login = async (body) => {
     });
     localStorage.setItem('token', response.data.access_token);
     localStorage.setItem('email', jwtDecoder(response.data.access_token).email);
+    localStorage.setItem('id', jwtDecoder(response.data.access_token).id);
     return response;
   } catch (error) {
     return error.response;
@@ -96,6 +97,7 @@ export const deleteListing = async (id) => {
 };
 
 export const updateListing = async (id, body) => {
+  console.log(body);
   try {
     const response = await apiCall('PUT', `${api.listings}/${id}`, body);
     return response;
@@ -115,6 +117,7 @@ export const createListing = async (body) => {
 
 export const publishListing = async (id, body) => {
   try {
+    console.log(body);
     const response = await apiCall('PUT', `${api.publishListing}/${id}`, body);
     return response;
   } catch (error) {
@@ -141,8 +144,13 @@ export const getBookings = async () => {
 };
 
 export const newReview = async (listingId, bookingId, body) => {
+  console.log(body);
   try {
-    const response = await apiCall('PUT', `${api.listings}/${listingId}/review/${bookingId}`, body);
+    const response = await apiCall(
+      'POST',
+      `${api.listings}/${listingId}/review/${bookingId}`,
+      body,
+    );
     return response;
   } catch (error) {
     return error.response;
@@ -150,6 +158,7 @@ export const newReview = async (listingId, bookingId, body) => {
 };
 
 export const newBooking = async (id, body) => {
+  console.log(body);
   try {
     const response = await apiCall('POST', `${api.newBooking}/${id}`, body);
     return response;

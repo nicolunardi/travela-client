@@ -16,10 +16,11 @@ import { BookingForm } from '../components/forms';
 import { UserContext } from '../contexts/UserContext';
 import { Box } from '@mui/system';
 import { ReviewModal } from '../components/modals';
+import DefaultHouseImg from '../assets/images/defaultHouse.jpeg';
 
 const styles = {
   carouselContainer: {
-    // maxWidth: '500px !important',
+    minHeight: '200px !important',
   },
   box: {
     display: 'flex',
@@ -41,22 +42,37 @@ const ListingInfo = () => {
   const [endDate, setEndDate] = useState(end ? new Date(end) : null);
   const [userBooking, setUserBooking] = useState('');
   const [showReviewModal, setShowReviewModal] = useState(false);
+  const [images, setImages] = useState([]);
 
   useEffect(async () => {
     const res = await getListing(id);
-    if (res.status === 200) {
+    if (res.status >= 200 && res.status < 300) {
       // get the user booking info for the listing if it exists
       if (user.token) {
         const res = await getBookings();
-        if (res.status === 200) {
+        if (res.status >= 200 && res.status < 300) {
           const bookings = getUserBookingsObjects(res.data.bookings);
           const userBooking = findBooking(bookings, id);
+          console.log(userBooking);
           if (userBooking) {
             setUserBooking(userBooking);
           }
         }
       }
-      setListing(res.data.listing);
+      const allImages = [];
+      if (res.data.thumbnail) {
+        allImages.push(res.data.thumbnail);
+      }
+      if (res.data.metadata.images.length > 0) {
+        for (const image of res.data.metadata.images) {
+          allImages.push(image.image);
+        }
+      }
+      if (allImages.length === 0) {
+        allImages.push(DefaultHouseImg);
+      }
+      setImages(allImages);
+      setListing(res.data);
     }
   }, []);
 
@@ -67,9 +83,9 @@ const ListingInfo = () => {
 
   const handlePostReview = async (rating, message) => {
     if (rating && message) {
-      const body = { review: { review: message, rating: rating, owner: user.email } };
+      const body = { review: { text: message, rating: rating } };
       const res = await newReview(id, userBooking.id, body);
-      if (res.status === 200) {
+      if (res.status >= 200 && res.status < 300) {
         const newReviews = listing.reviews.concat(body.review);
         setShowReviewModal(false);
         setListing({ ...listing, reviews: newReviews });
@@ -82,21 +98,21 @@ const ListingInfo = () => {
       {listing && (
         <Container>
           <Grid container spacing={2}>
-            <Grid item xs={12} sm={6} sx={styles.carouselContainer}>
+            <Grid item xs={12} sm={6}>
               <Typography variant="h4">{capitalize(listing.title)}</Typography>
               <RatingContainer reviews={listing.reviews} />
-              <Carousel>
-                {[listing.thumbnail, ...listing.metadata.imagesList].map((image, idx) => (
+              <Carousel sx={styles.carouselContainer}>
+                {images.map((image, idx) => (
                   <ImageItem key={idx} image={image}></ImageItem>
                 ))}
               </Carousel>
               <Typography variant="caption">
-                {capitalize(listing.metadata.type)} Hosted by {capitalize(listing.owner)}
+                {capitalize(listing.metadata.type)} Hosted by {capitalize(listing.owner_name)}
               </Typography>
               <Typography variant="caption"> at {getReadableAddress(listing.address)}</Typography>
               <Divider light></Divider>
               <Typography>
-                {listing.metadata.bedroomsTotal} Bedrooms · {listing.metadata.bedsTotal} Beds ·{' '}
+                {listing.metadata.total_bedrooms} Bedrooms · {listing.metadata.total_beds} Beds ·{' '}
                 {listing.metadata.bathrooms} Bathrooms · {listing.metadata.parking} Parking
               </Typography>
               <Divider light></Divider>

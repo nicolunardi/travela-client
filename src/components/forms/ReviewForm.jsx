@@ -6,9 +6,6 @@ const styles = {
   rating: {
     py: 2,
   },
-  // message: {
-
-  // }
 };
 
 const ReviewForm = ({ handlePost, handleClose }) => {

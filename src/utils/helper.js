@@ -67,9 +67,9 @@ export const isValidDateRange = (date1, date2) => {
  * @param {Array} bookings - the array of all bookings
  */
 export const getUserBookings = (bookings) => {
-  const owner = localStorage.getItem('email');
-  const userBookings = bookings.filter((booking) => booking.owner === owner);
-  return userBookings.map((booking) => booking.listingId);
+  const owner = localStorage.getItem('id');
+  const userBookings = bookings.filter((booking) => booking.owner_id === parseInt(owner));
+  return userBookings.map((booking) => booking.listing_id);
 };
 
 /**
@@ -80,7 +80,15 @@ export const getUserBookings = (bookings) => {
  * @return {object} - returns the booking if found
  */
 export const findBooking = (bookings, listingId) => {
-  return bookings.find((booking) => booking.listingId === listingId);
+  const allUserBookings = bookings.filter((booking) => booking.listing_id === parseInt(listingId));
+  if (allUserBookings.length) {
+    const acceptedBooking = allUserBookings.find((booking) => booking.status === 'accepted');
+    if (acceptedBooking) {
+      return acceptedBooking;
+    }
+  } else {
+    return undefined;
+  }
 };
 
 /**
@@ -90,8 +98,8 @@ export const findBooking = (bookings, listingId) => {
  * @param {Array} bookings - the array of all bookings
  */
 export const getUserBookingsObjects = (bookings) => {
-  const owner = localStorage.getItem('email');
-  return bookings.filter((booking) => booking.owner === owner);
+  const owner = localStorage.getItem('id');
+  return bookings.filter((booking) => booking.owner_id === parseInt(owner));
 };
 
 /**
@@ -102,7 +110,7 @@ export const getUserBookingsObjects = (bookings) => {
  * @return {array} - array of all the bookings associated with a listing
  */
 export const getBookingsByListing = (bookings, listingId) => {
-  return bookings.filter((booking) => booking.listingId === listingId);
+  return bookings.filter((booking) => booking.listing_id === listingId);
 };
 
 /**
@@ -239,7 +247,8 @@ export const getTotalCost = (price, dateRange) => {
  * @return {number} - the duration of the stay
  */
 export const getDuration = (dateRange) => {
-  return differenceInCalendarDays(dateRange.end, dateRange.start);
+  const duration = differenceInCalendarDays(dateRange.end, dateRange.start);
+  return duration;
 };
 
 /**
@@ -272,8 +281,8 @@ export const getLiveTime = (postedOn) => {
  */
 export const getDaysBooked = (bookings) => {
   return bookings.reduce((prev, curr) => {
-    const start = new Date(curr.dateRange.start);
-    const end = new Date(curr.dateRange.end);
+    const start = new Date(curr.start);
+    const end = new Date(curr.end);
     // used to check that the booking is within the current year
     const yearEnd = lastDayOfYear(new Date());
     if (differenceInCalendarYears(yearEnd, start) !== 0) {
@@ -293,12 +302,12 @@ export const getDaysBooked = (bookings) => {
 export const getTotalProfit = (bookings) => {
   return bookings.reduce((prev, curr) => {
     // check the booking falls within the current year
-    const start = new Date(curr.dateRange.start);
+    const start = new Date(curr.start);
     const yearEnd = lastDayOfYear(new Date());
     if (differenceInCalendarYears(yearEnd, start) !== 0) {
       return 0;
     } else {
-      return prev + curr.totalPrice;
+      return prev + curr.total;
     }
   }, 0);
 };
@@ -317,7 +326,8 @@ export const isDateWithinRange = (dateRange, date) => {
   dateRange.start.setHours(0, 0, 0, 0);
   dateRange.end.setHours(0, 0, 0, 0);
   date.setHours(0, 0, 0, 0);
-  return isWithinInterval(date, dateRange);
+  const x = isWithinInterval(date, dateRange);
+  return x;
 };
 
 /**
@@ -330,9 +340,13 @@ export const isDateWithinRange = (dateRange, date) => {
  */
 export const checkDatesAgainstAvailability = (availability, dateRange) => {
   for (const dates of availability) {
-    if (!isDateWithinRange(dates, dateRange.start) || !isDateWithinRange(dates, dateRange.end)) {
-      return false;
+    if (isDateWithinRange(dates, dateRange.start) && isDateWithinRange(dates, dateRange.end)) {
+      return true;
     }
   }
-  return true;
+  return false;
+};
+
+export const getDatefromDatetime = (datetime) => {
+  return datetime.toISOString().split('T')[0];
 };

@@ -31,6 +31,7 @@ const styles = {
 };
 
 const BookingsHistoryTable = ({ bookings }) => {
+  console.log(bookings, 'inside');
   return (
     <>
       {!!bookings.length && (
@@ -54,22 +55,25 @@ const BookingsHistoryTable = ({ bookings }) => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {bookings.map(({ id, owner, dateRange, totalPrice, status }) => (
-                <TableRow key={id} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+              {bookings.map((booking) => (
+                <TableRow
+                  key={booking.id}
+                  sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                >
                   <TableCell component="th" scope="row" sx={{ ...styles.cell, ...styles.name }}>
-                    <Typography sx={styles.text}>{owner}</Typography>
+                    <Typography sx={styles.text}>{booking.owner_id}</Typography>
                   </TableCell>
                   <TableCell sx={styles.cell} align="right">
-                    {formatDate(new Date(dateRange.start))}
+                    {formatDate(new Date(booking.start))}
                   </TableCell>
                   <TableCell sx={styles.cell} align="right">
-                    {formatDate(new Date(dateRange.end))}
+                    {formatDate(new Date(booking.end))}
                   </TableCell>
                   <TableCell sx={styles.cell} align="right">
-                    {totalPrice}
+                    {booking.total}
                   </TableCell>
                   <TableCell sx={styles.cell} align="right">
-                    {status}
+                    {booking.status}
                   </TableCell>
                 </TableRow>
               ))}

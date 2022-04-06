@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import TextField from '@mui/material/TextField';
 import { DesktopDatePicker } from '@mui/lab';
+import { getDatefromDatetime } from '../../../utils/helper';
 
 const styles = {
   dateInput: { mx: 2, my: 1 },
@@ -10,13 +11,13 @@ const styles = {
 const DatePickerRange = ({ idx, availability, setAvailability, errors: { error, message } }) => {
   const setStartValue = (newStartValue) => {
     const newAvailability = [...availability];
-    newAvailability[idx].start = newStartValue;
+    newAvailability[idx].start = getDatefromDatetime(newStartValue);
     setAvailability(newAvailability);
   };
 
   const setEndValue = (newEndValue) => {
     const newAvailability = [...availability];
-    newAvailability[idx].end = newEndValue;
+    newAvailability[idx].end = getDatefromDatetime(newEndValue);
     setAvailability(newAvailability);
   };
 

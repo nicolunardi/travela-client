@@ -18,7 +18,7 @@ const CardMainIcons = ({ metadata }) => {
           <KingBedIcon aria-label="beds" />
         </Tooltip>
         <Typography ml={1} variant="body2" color="initial">
-          {metadata.bedsTotal}
+          {metadata.total_beds}
         </Typography>
       </Box>
       <Box sx={styles.box}>

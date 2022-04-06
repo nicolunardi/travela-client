@@ -50,7 +50,7 @@ const CardDropdownMenu = ({ published, setListings, listings, listingId }) => {
       const res = await publishListing(listingId, {
         availability: availability,
       });
-      if (res.status === 200) {
+      if (res.status >= 200 && res.status < 300) {
         const newListings = listings.map((listing) => {
           if (listing.id === listingId) {
             listing.published = true;
@@ -64,7 +64,7 @@ const CardDropdownMenu = ({ published, setListings, listings, listingId }) => {
       }
     } else {
       const res = await unpublishListing(listingId);
-      if (res.status === 200) {
+      if (res.status >= 200 && res.status < 300) {
         const newListings = listings.map((listing) => {
           if (listing.id === listingId) {
             listing.published = false;

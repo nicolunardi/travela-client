@@ -12,7 +12,7 @@ import loginImage from '../../assets/svg/mustLogIn.svg';
 import { SvgContainer } from '../listingInfo';
 import { ConfirmBookModal } from '../modals';
 import { newBooking } from '../../service/api';
-import { getTotalCost } from '../../utils/helper';
+import { getDatefromDatetime, getTotalCost } from '../../utils/helper';
 import { AlertMsg } from '../alerts';
 
 const styles = {
@@ -68,11 +68,17 @@ const BookingForm = ({
   };
 
   const handleConfirm = async () => {
-    const dateRange = { start: startDate, end: endDate };
     const body = {
-      dateRange: dateRange,
-      totalPrice: getTotalCost(price, dateRange),
+      date_range: {
+        start: getDatefromDatetime(startDate),
+        end: getDatefromDatetime(endDate),
+      },
+      total: getTotalCost(price, {
+        start: startDate,
+        end: endDate,
+      }),
     };
+
     const res = await newBooking(listingId, body);
     if (res.status === 200) {
       setAlertMessage('Booked successfully, now the host just needs to confirm.');

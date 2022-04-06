@@ -6,6 +6,7 @@ import CheckCircleOutlinedIcon from '@mui/icons-material/CheckCircleOutlined';
 
 import { Box } from '@mui/system';
 import { RatingContainer, CardMainIcons } from '../hostedListings';
+import DefaultHouseImg from '../../assets/images/defaultHouse.jpeg';
 
 const styles = {
   cardStyle: {
@@ -42,7 +43,12 @@ const ListingCard = ({ listing, isBooked, dateRange }) => {
           subheader={`$${listing.price} per night`}
         />
         <Box sx={styles.imgContainer}>
-          <CardMedia component="img" height="194" image={listing.thumbnail} alt="house thumbnail" />
+          <CardMedia
+            component="img"
+            height="194"
+            image={listing.thumbnail || DefaultHouseImg}
+            alt="house thumbnail"
+          />
           {isBooked && (
             <Chip
               icon={<CheckCircleOutlinedIcon />}

@@ -12,9 +12,9 @@ import PoolIcon from '@mui/icons-material/Pool';
 
 const amenityIcons = {
   wifi: <WifiIcon fontSize="small"></WifiIcon>,
-  airCon: <AcUnitIcon fontSize="small"></AcUnitIcon>,
+  aircon: <AcUnitIcon fontSize="small"></AcUnitIcon>,
   kitchen: <RestaurantIcon fontSize="small"></RestaurantIcon>,
-  TV: <TvIcon fontSize="small"></TvIcon>,
+  tv: <TvIcon fontSize="small"></TvIcon>,
   heating: <DeviceThermostatIcon fontSize="small"></DeviceThermostatIcon>,
   fridge: <KitchenIcon fontSize="small"></KitchenIcon>,
   microwave: <MicrowaveIcon fontSize="small"></MicrowaveIcon>,
@@ -40,7 +40,7 @@ const CardAmenityContainer = ({ amenities }) => {
             const amenity = item[0];
             return (
               <List key={amenity} dense={true}>
-                <ListItem sx={{ px: 0 }}>
+                <ListItem sx={{ px: 1 }}>
                   <ListItemIcon>{amenityIcons[amenity]}</ListItemIcon>
                   <ListItemText primary={amenity} />
                 </ListItem>

@@ -24,21 +24,24 @@ const HostedListingInfo = () => {
   const [bookings, setBookings] = useState(null);
 
   useEffect(async () => {
-    const listings = await getListing(id);
-    if (listings.status === 200) {
+    const listingIn = await getListing(id);
+    if (listingIn.status >= 200 && listingIn.status < 300) {
       // check that the user is the owner of the listing
-      if (listings.data.listing.owner !== user.email) {
+      if (listingIn.data.owner_id !== parseInt(user.id)) {
         history.push('/');
         return;
       }
-      setListing({ ...listings.data.listing, id: id });
+      setListing(listingIn.data);
       const bookings = await getBookings();
-      if (bookings.status === 200) {
-        let listingBookings = getBookingsByListing(bookings.data.bookings, id);
+      if (bookings.status >= 200 && bookings.status < 300) {
+        let listingBookings = getBookingsByListing(bookings.data.bookings, listingIn.data.id);
         // check that the booking date is within the availability of the listing
         listingBookings = listingBookings.map((booking) => {
           if (
-            checkDatesAgainstAvailability(listings.data.listing.availability, booking.dateRange)
+            checkDatesAgainstAvailability(listingIn.data.availability, {
+              start: booking.start,
+              end: booking.end,
+            })
           ) {
             return { ...booking, isValid: true };
           } else {

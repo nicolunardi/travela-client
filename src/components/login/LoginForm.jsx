@@ -54,7 +54,11 @@ const LoginForm = () => {
         if (response.status >= 200 && response.status < 300) {
           setSuccess(true);
           setErrorMessage('successfully logged in');
-          setUser({ token: response.data.access_token, email: localStorage.getItem('email') });
+          setUser({
+            token: response.data.access_token,
+            email: localStorage.getItem('email'),
+            id: localStorage.getItem('id'),
+          });
           history.goBack();
         } else {
           setErrorMessage(response.data.detail);

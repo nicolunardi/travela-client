@@ -101,7 +101,6 @@ const EditListingForm = () => {
   useEffect(async () => {
     const response = await getListing(id);
     if (response.status >= 200 && response.status < 300) {
-      console.log(response.data);
       setListing(response.data);
     }
   }, []);
@@ -143,7 +142,7 @@ const EditListingForm = () => {
     const images = e.target.files;
     let newImages = await Object.entries(images).map(async ([_idx, img]) => {
       const imgUrl = await fileToDataUrl(img);
-      return imgUrl;
+      return { image: imgUrl };
     });
     newImages = await Promise.all(newImages);
     newListing.metadata.images.push(...newImages);
@@ -181,8 +180,7 @@ const EditListingForm = () => {
       total_bedrooms: bedrooms,
       total_beds: beds,
     };
-    console.log(metadata.images);
-    console.log(metadata.bedrooms);
+
     const res = await updateListing(id, updatedListing);
     if (res.status >= 200 && res.status < 300) {
       setAlertMessage('Listing successfully saved!');
