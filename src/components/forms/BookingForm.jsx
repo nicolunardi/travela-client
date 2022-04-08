@@ -80,7 +80,7 @@ const BookingForm = ({
     };
 
     const res = await newBooking(listingId, body);
-    if (res.status === 200) {
+    if (res.status >= 20 && res.status < 300) {
       setAlertMessage('Booked successfully, now the host just needs to confirm.');
       setSuccess(true);
       setShowAlert(true);

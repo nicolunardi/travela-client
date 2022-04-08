@@ -23,7 +23,7 @@ const CardDropdownMenu = ({ published, setListings, listings, listingId }) => {
   useEffect(async () => {
     if (agree) {
       const response = await deleteListing(listingId);
-      if (response.status === 200) {
+      if (response.status >= 200 && response.status < 300) {
         setListings(listings.filter((listing) => listing.id !== listingId));
       } else {
         //   TODO display alert
