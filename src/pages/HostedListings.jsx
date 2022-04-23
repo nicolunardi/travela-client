@@ -6,6 +6,8 @@ import { UserListingCard } from '../components/hostedListings';
 import { getListing, getListings } from '../service/api';
 import AddIcon from '@mui/icons-material/Add';
 import { UserContext } from '../contexts/UserContext';
+import { LoadingContainer } from '../components/loading';
+import homeLoading from '../assets/svg/homeLoading.svg';
 
 const styles = {
   container: { position: 'relative', my: 4 },
@@ -54,6 +56,7 @@ const HostedListings = () => {
                 listings={userListings}
               ></UserListingCard>
             ))}
+          {!userListings && <LoadingContainer image={homeLoading}></LoadingContainer>}
         </Grid>
         <Tooltip title="Create listing" placement="left">
           <SpeedDial
