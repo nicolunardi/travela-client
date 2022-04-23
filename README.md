@@ -1,6 +1,6 @@
 <div align="center" id="top">
   <h1>Travela Client</h1>
-  <a href="https://discussapp.netlify.app/">Click here for demo</a>
+  <a href="https://travela-app.netlify.app/">Click here for demo</a>
 </div>
   &#xa0;
 
