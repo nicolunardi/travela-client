@@ -17,6 +17,8 @@ import { UserContext } from '../contexts/UserContext';
 import { Box } from '@mui/system';
 import { ReviewModal } from '../components/modals';
 import DefaultHouseImg from '../assets/images/defaultHouse.jpeg';
+import homeLoading from '../assets/svg/homeLoading.svg';
+import { LoadingContainer } from '../components/loading';
 
 const styles = {
   carouselContainer: {
@@ -169,6 +171,7 @@ const ListingInfo = () => {
           </Grid>
         </Container>
       )}
+      {!listing && <LoadingContainer image={homeLoading}></LoadingContainer>}
     </>
   );
 };
